@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Spring-Boot Básico</title>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<link rel="icon" href="/image/favicon.png" />
+
+<!-- Bootstrap core CSS -->
+<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/webjars/open-iconic/font/css/open-iconic-bootstrap.min.css"
+	rel="stylesheet" />
+
+<!-- Custom styles for this template -->
+<link href="/css/style.css" rel="stylesheet" />
+</head>
+<body>
+
+	<header>
+		<nav
+			class="navbar navbar-inverse navbar navbar-dark bg-dark fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="btn btn-dark navbar-toggle pull-left">
+						<i class="oi oi-menu"></i>
+					</button>
+					<a class="navbar-brand " href="#">Tópicos em Java para a Web</a>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="layout-main">
+
+		<aside>
+			<nav class="sidebar sidebar-open">
+				<ul class="nav nav-pills">
+					<li class="nav-item"><a class="nav-link " href="/"> <i
+							class="oi oi-home"></i> <span>Home</span>
+					</a></li>
+				</ul>
+
+				<ul class="nav nav-pills">
+					<li class="nav-item"><span class="nav-link active">Pessoas</span></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/pessoa/cadastrar"> <i class="oi oi-plus"></i> <span>Cadastrar</span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/pessoa/listar"> <i class="oi oi-spreadsheet"></i> <span>Listar
+						</span>
+					</a></li>
+				</ul>
+			</nav>
+		</aside>
+
+		<section class="layout-content">
+
+			<nav class="navbar navbar-expand-md bg-light">
+				<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item active"><i class="oi oi-caret-right"></i>
+							<span>Cadastrar Pessoas</span></li>
+					</ul>
+				</div>
+				<a class="btn btn-primary btn-md" href="/" role="button"> <span class="oi oi-home" title="Home"
+						aria-hidden="true"></span> <span>Home</span>
+				</a>
+				<a class="btn btn-primary btn-md" href="/pessoa/listar"
+					role="button"> <span class="oi oi-spreadsheet" title="Cadastro"
+					aria-hidden="true"></span> <span>Listar Pessoas</span>
+				</a>
+			</nav>
+
+			<div class="container" id="cadastro">
+				<form th:action="${pessoa.id == null} ? @{/pessoa/salvar} : @{/pessoa/editar}" method="POST" th:object="${pessoa}">
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label for="nome">Nome da Pessoa</label>
+							<input type="text" class="form-control" id="nome" placeholder="Nome Pessoas" autofocus="autofocus" name="nome" th:field="*{nome}" />
+						</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="cpf">CPF da Pessoa</label>
+								<input type="text" class="form-control" id="cpf" placeholder="CPF Pessoas" autofocus="autofocus" th:field="*{cpf}" oninput="formatarCPF(this)" maxlength="14" />
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="dtNascimento">Data de Nascimento</label>
+								<input type="text" class="form-control" id="dtNascimento" placeholder="DD/MM/AAAA" autofocus="autofocus" th:field="*{dtNascimento}" oninput="formatarData(this)" />
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="peso">Peso - kg</label>
+								<input type="text" class="form-control" id="peso" placeholder="Peso" autofocus="autofocus" th:field="*{peso}" pattern="[0-9]+" />
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="altura">Altura - cm</label>
+								<input type="text" class="form-control" id="altura" placeholder="Altura" autofocus="autofocus" th:field="*{altura}" pattern="[0-9]+" />
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="imc">IMC</label>
+								<input type="text" class="form-control" id="imc" placeholder="IMC" autofocus="autofocus" th:field="*{imc}"
+									readonly="readonly" />
+								<input type="text" class="form-control" id="situacao" placeholder="Situação" autofocus="autofocus" th:field="*{situacao}"
+									readonly="readonly" />
+							</div>
+						</div>
+						<input type="hidden" id="id" th:field="*{id}" />
+						<button type="submit" class="btn btn-primary btn-sm" onclick="validateForm(event)">Salvar</button>
+					</div>	
+				</form>
+			</div>
+		</section>
+
+	</div>
+
+	<footer class="layout-footer">
+		<div class="container">
+			<span class="footer-copy">&copy; TJW</span>
+		</div>
+	</footer>
+
+	<!-- Bootstrap core JavaScript
+================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="/webjars/jquery/jquery.min.js"></script>
+	<script src="/webjars/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('[data-toggle="popover"]').popover();
+		});
+
+		$(document).ready(function() {
+			$(".navbar-toggle").click(function() {
+				$(".sidebar").toggleClass("sidebar-open");
+			});
+		
+			$('#peso, #altura').on('input', function () {
+				var peso = parseFloat($('#peso').val());
+				var altura = parseFloat($('#altura').val()) / 100;
+				if (!isNaN(peso) && !isNaN(altura) && altura > 0) {
+					var imc = peso / (altura * altura);
+					$('#imc').val(imc.toFixed(2));
+					if (imc < 18.5) {
+						$('#situacao').val('Abaixo do peso');
+					} else if (imc < 25) {
+						$('#situacao').val('Peso normal');
+					} else if (imc < 30) {
+						$('#situacao').val('Sobrepeso');
+					} else if (imc < 35) {
+						$('#situacao').val('Obesidade grau 1');
+					} else if (imc < 40) {
+						$('#situacao').val('Obesidade grau 2');
+					} else {
+						$('#situacao').val('Obesidade grau 3');
+					}
+				}
+			});
+		});
+	</script>
+	<script>
+		function formatarData(input) {
+			let valor = input.value;
+			valor = valor.replace(/\D/g, '');
+			if (valor.length > 2) {
+				valor = valor.replace(/(\d{2})(\d)/, '$1/$2');
+			}
+			if (valor.length > 5) {
+				valor = valor.replace(/(\d{2})(\d)/, '$1/$2');
+			}
+			input.value = valor;
+		}
+	</script>
+	<script>
+		function formatarCPF(input) {
+			let valor = input.value;
+			valor = valor.replace(/\D/g, '');
+			if (valor.length > 3) {
+				valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+			}
+			if (valor.length > 7) {
+				valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+			}
+			if (valor.length > 11) {
+				valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+			}
+			input.value = valor;
+		}
+	</script>
+	<script>
+		function validateForm(event) {
+			var nome = document.getElementById("nome").value;
+			var cpf = document.getElementById("cpf").value;
+			var dtNascimento = document.getElementById("dtNascimento").value;
+			var peso = document.getElementById("peso").value;
+			var altura = document.getElementById("altura").value;
+
+			if (nome === "" || cpf === "" || dtNascimento === "" || peso === "" || altura === "") {
+				event.preventDefault();
+				alert("Por favor, preencha todos os campos antes de salvar.");
+			}
+			if (dtNascimento !== ""){
+				var mes = dtNascimento.substring(3, 5);
+				var dia = dtNascimento.substring(0, 2);
+				var ano = dtNascimento.substring(6, 10);
+				if (mes < 1 || mes > 12) {
+					event.preventDefault();
+					alert("o mês deve estar entre 1 e 12.");
+				}
+				if ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia == 31) {
+					event.preventDefault();
+					alert("o mês " + mes + " não tem 31 dias!");
+				}
+				if (dia < 1 || dia > 31) {
+					event.preventDefault();
+					alert("o dia deve estar entre 1 e 31.");
+				}
+			}
+		}
+	</script>
+</body>
+</html>
