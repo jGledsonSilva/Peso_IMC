@@ -8,9 +8,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.edu.ifce</groupId>
-	<artifactId>MeuPrimeiroSpringBoot</artifactId>
+	<artifactId>Pessoa_IMC</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>MeuPrimeiroSpringBoot</name>
+	<name>Pessoa_IMC</name>
 	<description>Esse é o primeiro projeto da disciplina de tópicos em Java para a web</description>
 	<properties>
 		<java.version>17</java.version>
